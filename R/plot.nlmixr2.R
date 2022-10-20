@@ -1,5 +1,7 @@
 .setupPlotData <- function(data) {
   .dat <- as.data.frame(data)
+  .w <- which(!is.na(.dat$RES))
+  .dat <- .dat[.w, ]
   .doCmt <- FALSE
   if (any(names(.dat) == "CMT")) {
     if (length(levels(.dat$CMT)) > 1) {
@@ -36,7 +38,7 @@
   if (any(names(.dat0) == "CENS")) {
     dataPlot <- data.frame(DV = .dat0$DV, CENS = .dat0$CENS, utils::stack(.dat0[, vars, drop = FALSE]))
     .aes <- ggplot2::aes(.data$values, .data$DV, color = .data$CENS)
-    if (length(levels(.data$CENS)) == 3) {
+    if (length(levels(.dat0$CENS)) == 3) {
       .color <- ggplot2::scale_color_manual(values = c("blue", "black", "red"))
     } else {
       .color <- ggplot2::scale_color_manual(values = c("black", "red"))
