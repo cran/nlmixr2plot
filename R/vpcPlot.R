@@ -5,7 +5,7 @@
 #'   default is the fitted data, (can be retrieved by
 #'   \code{\link[nlme]{getData}}), but it can be changed by specifying
 #'   this argument.
-#' @param n Number of VPC simulations.  By default 100
+#' @param n Number of VPC simulations
 #' @param idv Name of independent variable. For `vpcPlot()` and
 #'   `vpcCens()` the default is `"time"` for `vpcPlotTad()` and
 #'   `vpcCensTad()` this is `"tad"`
@@ -22,17 +22,13 @@
 #' \donttest{
 #' one.cmt <- function() {
 #'  ini({
-#'    ## You may label each parameter with a comment
-#'    tka <- 0.45 # Log Ka
-#'    tcl <- log(c(0, 2.7, 100)) # Log Cl
-#'    ## This works with interactive models
-#'    ## You may also label the preceding line with label("label text")
-#'    tv <- 3.45; label("log V")
-#'    ## the label("Label name") works with all models
+#'    tka <- 0.45; label("Ka")
+#'    tcl <- log(c(0, 2.7, 100)); label("Cl")
+#'    tv <- 3.45; label("V")
 #'    eta.ka ~ 0.6
 #'    eta.cl ~ 0.3
 #'    eta.v ~ 0.1
-#'    add.sd <- 0.7
+#'    add.sd <- 0.7; label("Additive residual error")
 #'  })
 #'  model({
 #'    ka <- exp(tka + eta.ka)
@@ -42,15 +38,17 @@
 #'  })
 #' }
 #'
-#' fit <- nlmixr2est::nlmixr(one.cmt, nlmixr2data::theo_sd, est="focei")
+#' fit <-
+#'   nlmixr2est::nlmixr(
+#'     one.cmt,
+#'     data = nlmixr2data::theo_sd,
+#'     est = "saem",
+#'     control = list(print = 0)
+#'   )
 #'
 #' vpcPlot(fit)
-#'
 #' }
-#'
 #' @export
-#' @importFrom nlmixr2est vpcSim
-#' @importFrom vpc vpc_vpc
 vpcPlot <- function(fit, data = NULL, n = 300, bins = "jenks",
                     n_bins = "auto", bin_mid = "mean",
                     show = NULL, stratify = NULL, pred_corr = FALSE,
@@ -74,7 +72,7 @@ vpcPlot <- function(fit, data = NULL, n = 300, bins = "jenks",
     fit <- .fit
   }
   .ui <- rxode2::rxUiDecompress(fit$ui)
-  .obsLst <- .vpcUiSetupObservationData(fit, data=data, idv=idv)
+  .obsLst <- .vpcUiSetupObservationData(fit, data=data, idv=idv, cens=cens)
   .obs <- .obsLst$obs
   .no <- .obsLst$namesObs
   .nol <- .obsLst$namesObsLower
@@ -212,7 +210,7 @@ vpcCens <- function(..., cens=TRUE, idv="time") {
 #' @return List with `namesObs`, `namesObsLower`, `obs` and `obsCols`
 #' @author Matthew L. Fidler
 #' @noRd
-.vpcUiSetupObservationData <- function(fit, data=NULL, idv="time") {
+.vpcUiSetupObservationData <- function(fit, data=NULL, idv="time", cens=FALSE) {
   if (!is.null(data)) {
     .obs <- data
   } else {
@@ -254,8 +252,13 @@ vpcCens <- function(..., cens=TRUE, idv="time") {
   }
   .obsCols <- c(.obsCols,
                 list(idv=.no[.wo]))
+  if (!cens) {
+    .no <- .no[which(tolower(.no) != "cens")]
+    .nol <- .no[which(tolower(.no) != "cens")]
+    .obs <- .obs[which(tolower(names(.obs)) != "cens")]
+  }
   list(namesObs=.no,
        namesObsLower=.nol,
-       obs=.obs,
-       obsCols=.obsCols)
+              obs=.obs,
+              obsCols=.obsCols)
 }

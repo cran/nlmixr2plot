@@ -2,13 +2,9 @@ test_that("test plots with vdiffr", {
 
   one.cmt <- function() {
     ini({
-      ## You may label each parameter with a comment
-      tka <- 0.45 # Log Ka
-      tcl <- log(c(0, 2.7, 100)) # Log Cl
-      ## This works with interactive models
-      ## You may also label the preceding line with label("label text")
-      tv <- 3.45; label("log V")
-      ## the label("Label name") works with all models
+      tka <- 0.45
+      tcl <- log(c(0, 2.7, 100))
+      tv <- 3.45
       eta.ka ~ 0.6
       eta.cl ~ 0.3
       eta.v ~ 0.1
@@ -26,16 +22,23 @@ test_that("test plots with vdiffr", {
   # Assign CENS = 1 for bloq values, otherwise CENS = 0.
   censData$CENS[censData$DV < 3 & censData$AMT == 0] <- 1
   censData$CENS[censData$DV >= 3 & censData$AMT == 0] <- 0
-  #
+
   # Set DV to LOQ for all censored items
   censData$DV[censData$CENS == 1] <-  3
-#
 
-  fit <- nlmixr2est::nlmixr(one.cmt, censData,
-                            est="focei",
-                            table=nlmixr2est::tableControl(npde=TRUE))
+  skip_if_not(rxode2parse::.linCmtSens())
 
-  fitSim <- nlmixr2est::vpcSim(fit)
+  suppressMessages(
+    fit <-
+      nlmixr2est::nlmixr(
+        one.cmt, censData,
+        est="focei",
+        control = nlmixr2est::foceiControl(print = 0, eval.max = 10),
+        table=nlmixr2est::tableControl(npde=TRUE)
+      )
+  )
+
+  fitSim <- nlmixr2est::vpcSim(fit, n = 10)
 
   apo <- nlmixr2est::augPred(fit)
   expect_error(plot(apo), NA)
@@ -52,7 +55,10 @@ test_that("test plots with vdiffr", {
   expect_error(vpcCensTad(fit), NA)
   expect_error(vpcCensTad(fitSim, pred_corr=TRUE), NA)
 
-  expect_error(plot(fit), NA)
+  expect_error(plotted <- plot(fit), NA)
+  expect_length(plotted, 2)
+  expect_named(plotted, c("traceplot", "All Data"))
+  expect_named(plotted[["All Data"]])
 
   expect_error(traceplot(fit),NA)
 
@@ -76,15 +82,11 @@ test_that("test plots with vdiffr", {
     #}
   })
 
-  one.cmt <- function() {
+  oneCmtNoIiv <- function() {
     ini({
-      ## You may label each parameter with a comment
-      tka <- 0.45 # Log Ka
-      tcl <- log(c(0, 2.7, 100)) # Log Cl
-      ## This works with interactive models
-      ## You may also label the preceding line with label("label text")
-      tv <- 3.45; label("log V")
-      ## the label("Label name") works with all models
+      tka <- 0.45
+      tcl <- log(c(0, 2.7, 100))
+      tv <- 3.45
       add.sd <- 0.7
     })
     model({
@@ -95,19 +97,31 @@ test_that("test plots with vdiffr", {
     })
   }
 
-  fit2 <- nlmixr2est::nlmixr(one.cmt, nlmixr2data::theo_sd, est="focei",
-                             table=nlmixr2est::tableControl(npde=TRUE))
+  suppressMessages(
+    fitNoIiv <-
+      nlmixr2est::nlmixr(
+        object = oneCmtNoIiv,
+        data = nlmixr2data::theo_sd,
+        est = "focei",
+        control = nlmixr2est::foceiControl(print = 0, eval.max = 10),
+        table = nlmixr2est::tableControl(npde=TRUE)
+      )
+  )
 
-  ## apo <- nlmixr2est::augPred(fit2)
+  ## apo <- nlmixr2est::augPred(fitNoIiv)
   ## ap <- plot(apo)
 
-  expect_error(vpcPlot(fit2), NA)
+  suppressWarnings(
+    expect_error(vpcPlot(fitNoIiv, n = 10), NA)
+  )
 
-  #vp2 <- vpcPlot(fit2, pred_corr=TRUE)
+  #vp2 <- vpcPlot(fitNoIiv, pred_corr=TRUE)
 
-  expect_error(plot(fit2), NA)
+  expect_error(currentPlot <- plot(fitNoIiv), NA)
+  expect_named(currentPlot, c("traceplot", "All Data"))
+  expect_true(length(currentPlot[["All Data"]]) > 1)
 
-  expect_error(traceplot(fit2), NA)
+  expect_error(traceplot(fitNoIiv), NA)
 
   #vdiffr::expect_doppelganger("vpc plot np", vp)
   #vdiffr::expect_doppelganger("vpc pred_corr plot np", vp2)
