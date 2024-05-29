@@ -1,7 +1,7 @@
 Package: nlmixr2plot
 Title: Nonlinear Mixed Effects Models in Population PK/PD, Plot
         Functions
-Version: 2.0.8
+Version: 2.0.9
 Authors@R: c(
     person("Matthew", "Fidler", email="matthew.fidler@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8538-6691")),
@@ -28,11 +28,11 @@ Config/testthat/edition: 3
 Encoding: UTF-8
 RoxygenNote: 7.3.1
 NeedsCompilation: no
-Packaged: 2024-01-31 16:36:02 UTC; matt
+Packaged: 2024-05-29 21:05:44 UTC; matt
 Author: Matthew Fidler [aut, cre] (<https://orcid.org/0000-0001-8538-6691>),
   Bill Denney [ctb] (<https://orcid.org/0000-0002-5759-428X>),
   Wenping Wang [aut],
   Vipul Mann [aut]
 Maintainer: Matthew Fidler <matthew.fidler@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-01-31 17:20:02 UTC
+Date/Publication: 2024-05-29 21:30:06 UTC
