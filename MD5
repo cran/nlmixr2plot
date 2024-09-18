@@ -1,6 +1,6 @@
-4ebbff4d0ca28e6041a43a10b9a7f403 *DESCRIPTION
+3c53b51212a1f8416b60c01b5bca931f *DESCRIPTION
 200fb5e7c83a75d98056501b826ac5dc *NAMESPACE
-522156a0041c0485399e5d9fb6e5c593 *NEWS.md
+acc9df39982fc33d5b0a7533a2c6c2b0 *NEWS.md
 fad72d206479fffa13392b4004e69416 *R/nlmixr2PlotList.R
 d41d8cd98f00b204e9800998ecf8427e *R/nlmixr2plot.R
 468d7dc1fab4bcf987d5ffea4326ca11 *R/plot.nlmixr2.R
@@ -43,6 +43,6 @@ d615b9cce42558685170cbf0312aba3c *man/traceplot.Rd
 353a6ae30ba4d2827fee470597125fa9 *man/vpcPlot.Rd
 4d6acc95cdf02003d6c1f29b5ad3349f *tests/testthat.R
 8035a1dbe20a0e6abf60b6ab3dd264aa *tests/testthat/test-nlmixr2PlotList.R
-1de6b7d67dca29583ff9a7b0749219f4 *tests/testthat/test-plots-cens.R
+47c5a14d38992d0c00c45c2291573248 *tests/testthat/test-plots-cens.R
 99bce854ae0447085c3ed0cac9c9a1bf *tests/testthat/test-plots-multiple-endpoints.R
-ef51f11da0d242beb3ec994a3de97939 *tests/testthat/test-plots.R
+16a4085f96f75bde595530c001b27746 *tests/testthat/test-plots.R
