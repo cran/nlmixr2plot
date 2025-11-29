@@ -1,7 +1,7 @@
 Package: nlmixr2plot
 Title: Nonlinear Mixed Effects Models in Population PK/PD, Plot
         Functions
-Version: 3.0.3
+Version: 5.0.0
 Authors@R: c(
     person("Matthew", "Fidler", email="matthew.fidler@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8538-6691")),
@@ -21,14 +21,14 @@ License: GPL (>= 3)
 URL: https://github.com/nlmixr2/nlmixr2plot,
         https://nlmixr2.github.io/nlmixr2plot/
 BugReports: https://github.com/nlmixr2/nlmixr2plot/issues/
-Imports: ggplot2 (>= 3.4.0), nlmixr2est, nlmixr2extra, rxode2, utils,
-        vpc, xgxr
+Imports: ggplot2 (>= 3.4.0), nlmixr2est, nlmixr2extra (>= 5.0.0),
+        rxode2, utils, vpc, xgxr
 Suggests: testthat (>= 3.0.0), dplyr, withr, nlmixr2data
 Config/testthat/edition: 3
 Encoding: UTF-8
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2025-08-23 03:03:33 UTC; matt
+Packaged: 2025-11-29 14:31:01 UTC; matt
 Author: Matthew Fidler [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-8538-6691>),
   Bill Denney [ctb] (ORCID: <https://orcid.org/0000-0002-5759-428X>),
@@ -36,4 +36,4 @@ Author: Matthew Fidler [aut, cre] (ORCID:
   Vipul Mann [aut]
 Maintainer: Matthew Fidler <matthew.fidler@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-08-23 03:40:02 UTC
+Date/Publication: 2025-11-29 19:00:03 UTC
